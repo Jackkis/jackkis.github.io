@@ -1,70 +1,106 @@
+/* Grundläggande stil för sidan */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 spalter */
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-section label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-section input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.input-section button {
+  padding: 10px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.input-section button:hover {
+  background-color: #45a049;
+}
+
+.type-section {
+  margin-bottom: 20px;
+}
+
+.type-section h3 {
+  margin-top: 0;
+}
+
+.type-section label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.output-section {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.output-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.output-section p {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+/* Responsivitet */
+@media (max-width: 768px) {
   .container {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 350px;
+    grid-template-columns: 1fr; /* En kolumn för mindre skärmar */
   }
-  
-  h1, h3 {
-    color: #333333;
-  }
-  
-  .input-section, .type-section, .output-section {
-    margin: 20px 0;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555555;
-  }
-  
-  input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #dddddd;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px 0;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+
+  .input-section,
   .output-section {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
+    margin-bottom: 20px;
   }
-  
-  #totalResistance, #current, #inductorInfo, #phaseShift {
-    font-size: 18px;
-    color: #007BFF;
-  }
-  
+}

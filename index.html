@@ -1,57 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elschema Beräknare</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Elschema Beräknare</h1>
-    
-    <div class="input-section">
-      <label for="voltage">Spänning (V):</label>
-      <input type="number" id="voltage" placeholder="Ange spänning">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elschema Beräknare</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="input-section">
+        <label for="voltage">Spänning (V):</label>
+        <input
+          type="number"
+          id="voltage"
+          placeholder="Ange spänning (eller lämna tomt)"
+        />
 
-      <div id="resistorInputs">
-        <label>Resistans (Ω):</label>
-        <input type="number" class="resistor" placeholder="Ange resistans">
+        <label for="current">Ström (A):</label>
+        <input
+          type="number"
+          id="current"
+          placeholder="Ange ström (eller lämna tomt)"
+        />
+
+        <label for="resistance">Resistans (Ω):</label>
+        <input
+          type="number"
+          id="resistance"
+          placeholder="Ange resistans (eller lämna tomt)"
+        />
+
+        <div id="resistorInputs">
+          <label>Resistans (Ω) - Lägg till fler:</label>
+          <input type="number" class="resistor" placeholder="Ange resistans" />
+        </div>
+
+        <button id="addResistorButton">Lägg till resistor</button>
+
+        <label for="inductor">Induktans (H) [spole]:</label>
+        <input type="number" id="inductor" placeholder="Ange induktans" />
+        <span> (Endast för AC-kretsar)</span>
+
+        <label for="capacitance">Kapacitans (F) [kondensator]:</label>
+        <input type="number" id="capacitance" placeholder="Ange kapacitans" />
+
+        <label for="frequency">Frekvens (Hz):</label>
+        <input type="number" id="frequency" placeholder="Ange frekvens" />
+
+        <!-- Välj AC eller DC -->
+        <h3>Krets Typ</h3>
+        <label>
+          <input type="radio" name="circuitType" value="ac" checked />
+          AC Krets
+        </label>
+        <label>
+          <input type="radio" name="circuitType" value="dc" />
+          DC Krets
+        </label>
       </div>
 
-      <button id="addResistorButton">Lägg till resistor</button>
+      <div class="type-section">
+        <h3>Välj koppling</h3>
+        <label>
+          <input type="radio" name="connectionType" value="series" checked />
+          Seriekoppling
+        </label>
+        <label>
+          <input type="radio" name="connectionType" value="parallel" />
+          Parallellkoppling
+        </label>
+      </div>
 
-      <label for="inductor">Induktans (H) [spole]:</label>
-      <input type="number" id="inductor" placeholder="Ange induktans">
-      <span> (Endast för AC-kretsar)</span>
+      <button id="calculateButton">Beräkna</button>
 
-      <label for="frequency">Frekvens (Hz):</label>
-      <input type="number" id="frequency" placeholder="Ange frekvens">
-
+      <div class="output-section">
+        <h2>Resultat</h2>
+        <p id="totalResistance">Total resistans: --</p>
+        <p id="currentOutput">Ström: --</p>
+        <p id="voltageOutput">Spänning: --</p>
+        <p id="inductorInfo">Induktans påverkar inte DC-kretsar.</p>
+        <p id="phaseShift">Fasförskjutning: --</p>
+        <p id="activePower">Aktiv effekt: --</p>
+        <p id="reactivePower">Reaktiv effekt: --</p>
+        <p id="totalPower">Total effekt: --</p>
+      </div>
     </div>
-
-    <div class="type-section">
-      <h3>Välj koppling</h3>
-      <label>
-        <input type="radio" name="connectionType" value="series" checked>
-        Seriekoppling
-      </label>
-      <label>
-        <input type="radio" name="connectionType" value="parallel">
-        Parallellkoppling
-      </label>
-    </div>
-
-    <button id="calculateButton">Beräkna</button>
-
-    <div class="output-section">
-      <h2>Resultat</h2>
-      <p id="totalResistance">Total resistans: --</p>
-      <p id="current">Ström: --</p>
-      <p id="inductorInfo">Induktans påverkar inte DC-kretsar.</p>
-      <p id="phaseShift">Fasförskjutning: --</p>
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
