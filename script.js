@@ -44,53 +44,24 @@ calculateButton.addEventListener("click", () => {
   const capacitance = parseFloat(capacitanceInput.value);
   const frequency = parseFloat(frequencyInput.value);
 
+  // Beräkna saknade värden med Ohms lag
+  let calculatedVoltage = voltage;
+  let calculatedCurrent = current;
+  let calculatedResistance = resistance;
+
+  if (isNaN(calculatedVoltage) && !isNaN(calculatedCurrent) && !isNaN(calculatedResistance)) {
+    calculatedVoltage = calculatedCurrent * calculatedResistance;
+  } else if (isNaN(calculatedCurrent) && !isNaN(calculatedVoltage) && !isNaN(calculatedResistance)) {
+    calculatedCurrent = calculatedVoltage / calculatedResistance;
+  } else if (isNaN(calculatedResistance) && !isNaN(calculatedVoltage) && !isNaN(calculatedCurrent)) {
+    calculatedResistance = calculatedVoltage / calculatedCurrent;
+  }
+
   // Kontrollera om inmatningarna är giltiga
-  if (isNaN(voltage) && isNaN(current) && isNaN(resistance)) {
+  if (isNaN(calculatedVoltage) && isNaN(calculatedCurrent) && isNaN(calculatedResistance)) {
     totalResistanceOutput.textContent =
-      "Vänligen ange minst en av spänning, ström eller resistans.";
+      "Vänligen ange minst två av spänning, ström eller resistans.";
     return;
-  }
-
-  // Beräkna resistans om den saknas
-  let totalResistance;
-  if (isNaN(resistance)) {
-    if (!isNaN(voltage) && !isNaN(current)) {
-      totalResistance = voltage / current;
-    } else {
-      totalResistanceOutput.textContent =
-        "För att beräkna resistans måste spänning och ström anges.";
-      return;
-    }
-  } else {
-    totalResistance = resistance;
-  }
-
-  // Beräkna ström om den saknas
-  let totalCurrent;
-  if (isNaN(current)) {
-    if (!isNaN(voltage) && !isNaN(totalResistance)) {
-      totalCurrent = voltage / totalResistance;
-    } else {
-      currentOutput.textContent =
-        "För att beräkna ström måste spänning och resistans anges.";
-      return;
-    }
-  } else {
-    totalCurrent = current;
-  }
-
-  // Beräkna spänning om den saknas
-  let totalVoltage;
-  if (isNaN(voltage)) {
-    if (!isNaN(totalCurrent) && !isNaN(totalResistance)) {
-      totalVoltage = totalCurrent * totalResistance;
-    } else {
-      voltageOutput.textContent =
-        "För att beräkna spänning måste ström och resistans anges.";
-      return;
-    }
-  } else {
-    totalVoltage = voltage;
   }
 
   // Beräkna total resistans (seriekoppling eller parallellkoppling)
@@ -98,17 +69,21 @@ calculateButton.addEventListener("click", () => {
   if (connectionType === "series") {
     totalResistanceFinal = resistors.reduce(
       (sum, r) => sum + r,
-      totalResistance
+      calculatedResistance
     );
   } else if (connectionType === "parallel") {
     totalResistanceFinal =
-      1 / resistors.reduce((sum, r) => sum + 1 / r, 1 / totalResistance);
+      1 / resistors.reduce((sum, r) => sum + 1 / r, 1 / calculatedResistance);
   }
 
   // Resultat för AC eller DC
   if (circuitType === "dc") {
-    // För DC: Beräkna effekt, ström, resistans och spänning
-    const activePower = totalVoltage * totalCurrent;
+    const activePower = calculatedVoltage * calculatedCurrent;
+    totalResistanceOutput.textContent = `Total resistans: ${totalResistanceFinal.toFixed(
+      2
+    )} Ω`;
+    currentOutput.textContent = `Ström: ${calculatedCurrent.toFixed(2)} A`;
+    voltageOutput.textContent = `Spänning: ${calculatedVoltage.toFixed(2)} V`;
     totalPowerOutput.textContent = `Total effekt: ${activePower.toFixed(2)} W`;
     reactivePowerOutput.textContent = `Reaktiv effekt: 0 W (för DC)`;
     phaseShiftOutput.textContent = "Fasförskjutning: 0°";
@@ -121,14 +96,15 @@ calculateButton.addEventListener("click", () => {
     const totalImpedance = Math.sqrt(totalResistanceFinal ** 2 + X_total ** 2);
     const phaseShift = Math.atan(X_total / totalResistanceFinal);
 
-    const activePower = totalVoltage * totalCurrent * Math.cos(phaseShift);
-    const reactivePower = totalVoltage * totalCurrent * Math.sin(phaseShift);
-    const totalPower = totalVoltage * totalCurrent;
+    const activePower = calculatedVoltage * calculatedCurrent * Math.cos(phaseShift);
+    const reactivePower = calculatedVoltage * calculatedCurrent * Math.sin(phaseShift);
+    const totalPower = calculatedVoltage * calculatedCurrent;
 
     totalResistanceOutput.textContent = `Total resistans: ${totalResistanceFinal.toFixed(
       2
     )} Ω`;
-    currentOutput.textContent = `Ström: ${totalCurrent.toFixed(2)} A`;
+    currentOutput.textContent = `Ström: ${calculatedCurrent.toFixed(2)} A`;
+    voltageOutput.textContent = `Spänning: ${calculatedVoltage.toFixed(2)} V`;
     inductorInfo.textContent =
       X_L > 0
         ? `Induktiv reaktans: ${X_L.toFixed(2)} Ω`
